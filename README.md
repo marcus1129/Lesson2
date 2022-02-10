@@ -24,11 +24,13 @@ while(1){
 		}
 	}
 	if(getLength(storedValues) == 3){
-		clear_screen();
-		SendCharXY(storedValues[0], 0, 0);
-		SendCharXY(storedValues[1], 0, 1);
-		SendCharXY(storedValues[2], 0, 2);
+        for(int i = 0; i < 3; i++){
+			SendCharXY(storedValues[i], 0, i);
+        }
 	}
 }
 ```
 
+After testing it was discovered that no fluctuation in signals occur during button press, and signals only fall once per button press, therefore no preventative methods have been implemented.
+
+Also clear_screen() isn't necessary as we write to the same position every time, which overwrites the previous writing.
