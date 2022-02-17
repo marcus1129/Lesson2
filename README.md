@@ -1,4 +1,4 @@
-# Lesson2
+# Opgave 2
 
 ### The following document describes and documents the creative process involved in creating a program that can take an 8-bit input from a dip switch by pressing a button, then displaying the result to and LCS screen, as described by the assignment "Opgave 2".
 
@@ -116,3 +116,7 @@ if(gate == 1){
 ```
 
 Which concludes the program.
+
+The full program, process and all other files used for/by the program can be found in the following repo:
+
+https://github.com/marcus1129/Lesson2.git
