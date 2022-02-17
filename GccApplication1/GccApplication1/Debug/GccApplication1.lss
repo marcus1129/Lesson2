@@ -3,29 +3,31 @@ GccApplication1.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000002  00800200  00000730  000007a4  2**0
+  0 .data         00000002  00800200  00000786  0000081a  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000730  00000000  00000000  00000074  2**1
+  1 .text         00000786  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  000007a6  2**0
+  2 .bss          00000002  00800202  00800202  0000081c  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  0000081c  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000007d8  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  0000084c  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000168  00000000  00000000  00000818  2**0
+  5 .debug_aranges 00000170  00000000  00000000  0000088c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00002106  00000000  00000000  00000980  2**0
+  6 .debug_info   000021c4  00000000  00000000  000009fc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000f87  00000000  00000000  00002a86  2**0
+  7 .debug_abbrev 00001010  00000000  00000000  00002bc0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000dd7  00000000  00000000  00003a0d  2**0
+  8 .debug_line   00000e8c  00000000  00000000  00003bd0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  000003c8  00000000  00000000  000047e4  2**2
+  9 .debug_frame  000003ec  00000000  00000000  00004a5c  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000885  00000000  00000000  00004bac  2**0
+ 10 .debug_str    00000889  00000000  00000000  00004e48  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000fe8  00000000  00000000  00005431  2**0
+ 11 .debug_loc    00001075  00000000  00000000  000056d1  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000001b0  00000000  00000000  00006419  2**0
+ 12 .debug_ranges 000001a0  00000000  00000000  00006746  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -41,7 +43,7 @@ Disassembly of section .text:
    e:	00 00       	nop
   10:	08 c2       	rjmp	.+1040   	; 0x422 <__bad_interrupt>
   12:	00 00       	nop
-  14:	06 c2       	rjmp	.+1036   	; 0x422 <__bad_interrupt>
+  14:	c8 c2       	rjmp	.+1424   	; 0x5a6 <__vector_5>
   16:	00 00       	nop
   18:	04 c2       	rjmp	.+1032   	; 0x422 <__bad_interrupt>
   1a:	00 00       	nop
@@ -543,7 +545,7 @@ Disassembly of section .text:
  3f4:	12 e0       	ldi	r17, 0x02	; 2
  3f6:	a0 e0       	ldi	r26, 0x00	; 0
  3f8:	b2 e0       	ldi	r27, 0x02	; 2
- 3fa:	e0 e3       	ldi	r30, 0x30	; 48
+ 3fa:	e6 e8       	ldi	r30, 0x86	; 134
  3fc:	f7 e0       	ldi	r31, 0x07	; 7
  3fe:	00 e0       	ldi	r16, 0x00	; 0
  400:	0b bf       	out	0x3b, r16	; 59
@@ -564,11 +566,11 @@ Disassembly of section .text:
  416:	1d 92       	st	X+, r1
 
 00000418 <.do_clear_bss_start>:
- 418:	a2 30       	cpi	r26, 0x02	; 2
+ 418:	a4 30       	cpi	r26, 0x04	; 4
  41a:	b2 07       	cpc	r27, r18
  41c:	e1 f7       	brne	.-8      	; 0x416 <.do_clear_bss_loop>
- 41e:	74 d0       	rcall	.+232    	; 0x508 <main>
- 420:	85 c1       	rjmp	.+778    	; 0x72c <_exit>
+ 41e:	76 d0       	rcall	.+236    	; 0x50c <main>
+ 420:	b0 c1       	rjmp	.+864    	; 0x782 <_exit>
 
 00000422 <__bad_interrupt>:
  422:	ee cd       	rjmp	.-1060   	; 0x0 <__vectors>
@@ -680,407 +682,469 @@ void init(){
  4de:	10 92 07 01 	sts	0x0107, r1	; 0x800107 <__TEXT_REGION_LENGTH__+0x7c0107>
 	DDRG = 0x00; //D4
  4e2:	13 ba       	out	0x13, r1	; 19
+	DDRE = 0x00; //E4
+ 4e4:	1d b8       	out	0x0d, r1	; 13
+	PORTE = 0xFF;
+ 4e6:	8f ef       	ldi	r24, 0xFF	; 255
+ 4e8:	8e b9       	out	0x0e, r24	; 14
 	PORTK = 0xFF;
- 4e4:	8f ef       	ldi	r24, 0xFF	; 255
- 4e6:	80 93 08 01 	sts	0x0108, r24	; 0x800108 <__TEXT_REGION_LENGTH__+0x7c0108>
+ 4ea:	80 93 08 01 	sts	0x0108, r24	; 0x800108 <__TEXT_REGION_LENGTH__+0x7c0108>
 	PORTG = 0xFF;
- 4ea:	84 bb       	out	0x14, r24	; 20
- 4ec:	08 95       	ret
+ 4ee:	84 bb       	out	0x14, r24	; 20
+ 4f0:	08 95       	ret
 
-000004ee <storeValue>:
+000004f2 <storeValue>:
 }
 
 void storeValue(char* values, uint8_t buffer, int* index){
- 4ee:	fa 01       	movw	r30, r20
+ 4f2:	fa 01       	movw	r30, r20
 	values[*index] = buffer;
- 4f0:	20 81       	ld	r18, Z
- 4f2:	31 81       	ldd	r19, Z+1	; 0x01
- 4f4:	82 0f       	add	r24, r18
- 4f6:	93 1f       	adc	r25, r19
- 4f8:	dc 01       	movw	r26, r24
- 4fa:	6c 93       	st	X, r22
+ 4f4:	20 81       	ld	r18, Z
+ 4f6:	31 81       	ldd	r19, Z+1	; 0x01
+ 4f8:	82 0f       	add	r24, r18
+ 4fa:	93 1f       	adc	r25, r19
+ 4fc:	dc 01       	movw	r26, r24
+ 4fe:	6c 93       	st	X, r22
 	*index += 1;
- 4fc:	80 81       	ld	r24, Z
- 4fe:	91 81       	ldd	r25, Z+1	; 0x01
- 500:	01 96       	adiw	r24, 0x01	; 1
- 502:	91 83       	std	Z+1, r25	; 0x01
- 504:	80 83       	st	Z, r24
- 506:	08 95       	ret
+ 500:	80 81       	ld	r24, Z
+ 502:	91 81       	ldd	r25, Z+1	; 0x01
+ 504:	01 96       	adiw	r24, 0x01	; 1
+ 506:	91 83       	std	Z+1, r25	; 0x01
+ 508:	80 83       	st	Z, r24
+ 50a:	08 95       	ret
 
-00000508 <main>:
+0000050c <main>:
 }
+
+volatile int gate = 0;
 
 int main(void)
 {  
- 508:	cf 93       	push	r28
- 50a:	df 93       	push	r29
- 50c:	00 d0       	rcall	.+0      	; 0x50e <main+0x6>
- 50e:	1f 92       	push	r1
- 510:	1f 92       	push	r1
- 512:	cd b7       	in	r28, 0x3d	; 61
- 514:	de b7       	in	r29, 0x3e	; 62
-	init();
- 516:	e3 df       	rcall	.-58     	; 0x4de <init>
+ 50c:	cf 93       	push	r28
+ 50e:	df 93       	push	r29
+ 510:	00 d0       	rcall	.+0      	; 0x512 <main+0x6>
+ 512:	1f 92       	push	r1
+ 514:	1f 92       	push	r1
+ 516:	cd b7       	in	r28, 0x3d	; 61
+ 518:	de b7       	in	r29, 0x3e	; 62
 	_i2c_address = 0X78;
- 518:	88 e7       	ldi	r24, 0x78	; 120
- 51a:	80 93 00 02 	sts	0x0200, r24	; 0x800200 <__DATA_REGION_ORIGIN__>
-  
-	I2C_Init();
-	InitializeDisplay();
- 51e:	82 df       	rcall	.-252    	; 0x424 <I2C_Init>
- 520:	37 d0       	rcall	.+110    	; 0x590 <InitializeDisplay>
-	print_fonts();
- 522:	c3 d0       	rcall	.+390    	; 0x6aa <print_fonts>
-
-	char storedValues[3];
-    int index = 0;
- 524:	1d 82       	std	Y+5, r1	; 0x05
- 526:	1c 82       	std	Y+4, r1	; 0x04
-	clear_display(); 
- 528:	85 d0       	rcall	.+266    	; 0x634 <clear_display>
- 52a:	95 99       	sbic	0x12, 5	; 18
+ 51a:	88 e7       	ldi	r24, 0x78	; 120
+ 51c:	80 93 00 02 	sts	0x0200, r24	; 0x800200 <__DATA_REGION_ORIGIN__>
 	
-	while (1){
-		if((PING & 0b00100000) == 0b00000000){
- 52c:	0a c0       	rjmp	.+20     	; 0x542 <main+0x3a>
- 52e:	95 9b       	sbis	0x12, 5	; 18
-			while((PING & 0b00100000) == 0b00000000){}
- 530:	fe cf       	rjmp	.-4      	; 0x52e <main+0x26>
- 532:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <__TEXT_REGION_LENGTH__+0x7c0106>
-			storeValue(storedValues, PINK, &index);
- 536:	ae 01       	movw	r20, r28
- 538:	4c 5f       	subi	r20, 0xFC	; 252
- 53a:	5f 4f       	sbci	r21, 0xFF	; 255
- 53c:	ce 01       	movw	r24, r28
- 53e:	01 96       	adiw	r24, 0x01	; 1
- 540:	d6 df       	rcall	.-84     	; 0x4ee <storeValue>
- 542:	8c 81       	ldd	r24, Y+4	; 0x04
-		}
-		if(index == 3){
- 544:	9d 81       	ldd	r25, Y+5	; 0x05
- 546:	03 97       	sbiw	r24, 0x03	; 3
- 548:	81 f7       	brne	.-32     	; 0x52a <main+0x22>
- 54a:	0e c0       	rjmp	.+28     	; 0x568 <main+0x60>
- 54c:	e1 e0       	ldi	r30, 0x01	; 1
-			for(int i = 0; i < 3; i++){
-				sendCharXY(storedValues[i], 0, i);
- 54e:	f0 e0       	ldi	r31, 0x00	; 0
- 550:	ec 0f       	add	r30, r28
- 552:	fd 1f       	adc	r31, r29
- 554:	e0 0f       	add	r30, r16
- 556:	f1 1f       	adc	r31, r17
- 558:	a8 01       	movw	r20, r16
- 55a:	60 e0       	ldi	r22, 0x00	; 0
- 55c:	70 e0       	ldi	r23, 0x00	; 0
- 55e:	80 81       	ld	r24, Z
- 560:	7d d0       	rcall	.+250    	; 0x65c <sendCharXY>
- 562:	0f 5f       	subi	r16, 0xFF	; 255
-		if((PING & 0b00100000) == 0b00000000){
-			while((PING & 0b00100000) == 0b00000000){}
-			storeValue(storedValues, PINK, &index);
-		}
-		if(index == 3){
-			for(int i = 0; i < 3; i++){
- 564:	1f 4f       	sbci	r17, 0xFF	; 255
- 566:	02 c0       	rjmp	.+4      	; 0x56c <main+0x64>
- 568:	00 e0       	ldi	r16, 0x00	; 0
- 56a:	10 e0       	ldi	r17, 0x00	; 0
- 56c:	03 30       	cpi	r16, 0x03	; 3
- 56e:	11 05       	cpc	r17, r1
- 570:	6c f3       	brlt	.-38     	; 0x54c <main+0x44>
- 572:	1d 82       	std	Y+5, r1	; 0x05
-				sendCharXY(storedValues[i], 0, i);
+	init();
+ 520:	de df       	rcall	.-68     	; 0x4de <init>
+	I2C_Init();
+ 522:	80 df       	rcall	.-256    	; 0x424 <I2C_Init>
+	InitializeDisplay();
+ 524:	60 d0       	rcall	.+192    	; 0x5e6 <InitializeDisplay>
+	print_fonts();
+ 526:	ec d0       	rcall	.+472    	; 0x700 <print_fonts>
+ 528:	b0 d0       	rcall	.+352    	; 0x68a <clear_display>
+	clear_display(); 
+ 52a:	82 e0       	ldi	r24, 0x02	; 2
+ 52c:	80 93 6a 00 	sts	0x006A, r24	; 0x80006a <__TEXT_REGION_LENGTH__+0x7c006a>
+	
+	EICRB = 0b00000010;
+ 530:	80 e1       	ldi	r24, 0x10	; 16
+ 532:	8d bb       	out	0x1d, r24	; 29
+	EIMSK = 0b00010000;
+ 534:	78 94       	sei
+ 536:	1d 82       	std	Y+5, r1	; 0x05
+	sei();
+ 538:	1c 82       	std	Y+4, r1	; 0x04
+	
+	char storedValues[3];
+	int index = 0;
+ 53a:	80 91 02 02 	lds	r24, 0x0202	; 0x800202 <__data_end>
 			}
 			index = 0;
- 574:	1c 82       	std	Y+4, r1	; 0x04
- 576:	d9 cf       	rjmp	.-78     	; 0x52a <main+0x22>
+		}*/
+		
+		/* ------ INTERRUPT SOLUTION ------ */
+		if(gate == 1){
+ 53e:	90 91 03 02 	lds	r25, 0x0203	; 0x800203 <__data_end+0x1>
+ 542:	01 97       	sbiw	r24, 0x01	; 1
+ 544:	d1 f7       	brne	.-12     	; 0x53a <main+0x2e>
+ 546:	2f ef       	ldi	r18, 0xFF	; 255
+ 548:	81 ee       	ldi	r24, 0xE1	; 225
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
 
-00000578 <ssd1306_command>:
- 578:	cf 93       	push	r28
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 54a:	94 e0       	ldi	r25, 0x04	; 4
+ 54c:	21 50       	subi	r18, 0x01	; 1
+ 54e:	80 40       	sbci	r24, 0x00	; 0
+ 550:	90 40       	sbci	r25, 0x00	; 0
+ 552:	e1 f7       	brne	.-8      	; 0x54c <main+0x40>
+ 554:	00 c0       	rjmp	.+0      	; 0x556 <main+0x4a>
+ 556:	00 00       	nop
+ 558:	98 d0       	rcall	.+304    	; 0x68a <clear_display>
+			_delay_ms(100);
+			clear_display();
+ 55a:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <__TEXT_REGION_LENGTH__+0x7c0106>
+			storeValue(storedValues, PINK, &index);
+ 55e:	ae 01       	movw	r20, r28
+ 560:	4c 5f       	subi	r20, 0xFC	; 252
+ 562:	5f 4f       	sbci	r21, 0xFF	; 255
+ 564:	ce 01       	movw	r24, r28
+ 566:	01 96       	adiw	r24, 0x01	; 1
+ 568:	c4 df       	rcall	.-120    	; 0x4f2 <storeValue>
+ 56a:	00 e0       	ldi	r16, 0x00	; 0
+ 56c:	10 e0       	ldi	r17, 0x00	; 0
+			for(int i = 0; i < index; i++){
+ 56e:	0d c0       	rjmp	.+26     	; 0x58a <main+0x7e>
+ 570:	e1 e0       	ldi	r30, 0x01	; 1
+ 572:	f0 e0       	ldi	r31, 0x00	; 0
+				sendCharXY(storedValues[i], 0, i);
+ 574:	ec 0f       	add	r30, r28
+ 576:	fd 1f       	adc	r31, r29
+ 578:	e0 0f       	add	r30, r16
+ 57a:	f1 1f       	adc	r31, r17
+ 57c:	a8 01       	movw	r20, r16
+ 57e:	60 e0       	ldi	r22, 0x00	; 0
+ 580:	70 e0       	ldi	r23, 0x00	; 0
+ 582:	80 81       	ld	r24, Z
+ 584:	96 d0       	rcall	.+300    	; 0x6b2 <sendCharXY>
+ 586:	0f 5f       	subi	r16, 0xFF	; 255
+ 588:	1f 4f       	sbci	r17, 0xFF	; 255
+		/* ------ INTERRUPT SOLUTION ------ */
+		if(gate == 1){
+			_delay_ms(100);
+			clear_display();
+			storeValue(storedValues, PINK, &index);
+			for(int i = 0; i < index; i++){
+ 58a:	8c 81       	ldd	r24, Y+4	; 0x04
+ 58c:	9d 81       	ldd	r25, Y+5	; 0x05
+ 58e:	08 17       	cp	r16, r24
+ 590:	19 07       	cpc	r17, r25
+ 592:	74 f3       	brlt	.-36     	; 0x570 <main+0x64>
+ 594:	03 97       	sbiw	r24, 0x03	; 3
+ 596:	11 f4       	brne	.+4      	; 0x59c <main+0x90>
+				sendCharXY(storedValues[i], 0, i);
+			}
+			if(index == 3){
+ 598:	1d 82       	std	Y+5, r1	; 0x05
+ 59a:	1c 82       	std	Y+4, r1	; 0x04
+				index = 0;
+ 59c:	10 92 03 02 	sts	0x0203, r1	; 0x800203 <__data_end+0x1>
+			}
+			gate = 0;
+ 5a0:	10 92 02 02 	sts	0x0202, r1	; 0x800202 <__data_end>
+ 5a4:	ca cf       	rjmp	.-108    	; 0x53a <main+0x2e>
+
+000005a6 <__vector_5>:
+ 5a6:	1f 92       	push	r1
+ 5a8:	0f 92       	push	r0
+		}
+	}
+}
+ISR(INT4_vect){
+ 5aa:	0f b6       	in	r0, 0x3f	; 63
+ 5ac:	0f 92       	push	r0
+ 5ae:	11 24       	eor	r1, r1
+ 5b0:	8f 93       	push	r24
+ 5b2:	9f 93       	push	r25
+	gate = 1;
+ 5b4:	81 e0       	ldi	r24, 0x01	; 1
+ 5b6:	90 e0       	ldi	r25, 0x00	; 0
+ 5b8:	90 93 03 02 	sts	0x0203, r25	; 0x800203 <__data_end+0x1>
+ 5bc:	80 93 02 02 	sts	0x0202, r24	; 0x800202 <__data_end>
+ 5c0:	9f 91       	pop	r25
+ 5c2:	8f 91       	pop	r24
+ 5c4:	0f 90       	pop	r0
+ 5c6:	0f be       	out	0x3f, r0	; 63
+ 5c8:	0f 90       	pop	r0
+ 5ca:	1f 90       	pop	r1
+ 5cc:	18 95       	reti
+
+000005ce <ssd1306_command>:
 
 	ssd1306_command(0xb0 + y);
 	ssd1306_command(((x & 0xf0) >> 4) | 0x10); // | 0x10
 
 
 }
- 57a:	c8 2f       	mov	r28, r24
- 57c:	80 91 00 02 	lds	r24, 0x0200	; 0x800200 <__DATA_REGION_ORIGIN__>
- 580:	6c df       	rcall	.-296    	; 0x45a <I2C_Start>
- 582:	80 e0       	ldi	r24, 0x00	; 0
- 584:	8e df       	rcall	.-228    	; 0x4a2 <I2C_Write>
- 586:	8c 2f       	mov	r24, r28
- 588:	8c df       	rcall	.-232    	; 0x4a2 <I2C_Write>
- 58a:	a1 df       	rcall	.-190    	; 0x4ce <I2C_Stop>
- 58c:	cf 91       	pop	r28
- 58e:	08 95       	ret
+ 5ce:	cf 93       	push	r28
+ 5d0:	c8 2f       	mov	r28, r24
+ 5d2:	80 91 00 02 	lds	r24, 0x0200	; 0x800200 <__DATA_REGION_ORIGIN__>
+ 5d6:	41 df       	rcall	.-382    	; 0x45a <I2C_Start>
+ 5d8:	80 e0       	ldi	r24, 0x00	; 0
+ 5da:	63 df       	rcall	.-314    	; 0x4a2 <I2C_Write>
+ 5dc:	8c 2f       	mov	r24, r28
+ 5de:	61 df       	rcall	.-318    	; 0x4a2 <I2C_Write>
+ 5e0:	76 df       	rcall	.-276    	; 0x4ce <I2C_Stop>
+ 5e2:	cf 91       	pop	r28
+ 5e4:	08 95       	ret
 
-00000590 <InitializeDisplay>:
- 590:	8e ea       	ldi	r24, 0xAE	; 174
- 592:	f2 df       	rcall	.-28     	; 0x578 <ssd1306_command>
- 594:	85 ed       	ldi	r24, 0xD5	; 213
- 596:	f0 df       	rcall	.-32     	; 0x578 <ssd1306_command>
- 598:	80 e8       	ldi	r24, 0x80	; 128
- 59a:	ee df       	rcall	.-36     	; 0x578 <ssd1306_command>
- 59c:	88 ea       	ldi	r24, 0xA8	; 168
- 59e:	ec df       	rcall	.-40     	; 0x578 <ssd1306_command>
- 5a0:	8f e3       	ldi	r24, 0x3F	; 63
- 5a2:	ea df       	rcall	.-44     	; 0x578 <ssd1306_command>
- 5a4:	83 ed       	ldi	r24, 0xD3	; 211
- 5a6:	e8 df       	rcall	.-48     	; 0x578 <ssd1306_command>
- 5a8:	80 e0       	ldi	r24, 0x00	; 0
- 5aa:	e6 df       	rcall	.-52     	; 0x578 <ssd1306_command>
- 5ac:	80 e4       	ldi	r24, 0x40	; 64
- 5ae:	e4 df       	rcall	.-56     	; 0x578 <ssd1306_command>
- 5b0:	8d e8       	ldi	r24, 0x8D	; 141
- 5b2:	e2 df       	rcall	.-60     	; 0x578 <ssd1306_command>
- 5b4:	84 e1       	ldi	r24, 0x14	; 20
- 5b6:	e0 df       	rcall	.-64     	; 0x578 <ssd1306_command>
- 5b8:	80 e2       	ldi	r24, 0x20	; 32
- 5ba:	de df       	rcall	.-68     	; 0x578 <ssd1306_command>
- 5bc:	80 e0       	ldi	r24, 0x00	; 0
- 5be:	dc df       	rcall	.-72     	; 0x578 <ssd1306_command>
- 5c0:	81 ea       	ldi	r24, 0xA1	; 161
- 5c2:	da df       	rcall	.-76     	; 0x578 <ssd1306_command>
- 5c4:	88 ec       	ldi	r24, 0xC8	; 200
- 5c6:	d8 df       	rcall	.-80     	; 0x578 <ssd1306_command>
- 5c8:	8a ed       	ldi	r24, 0xDA	; 218
- 5ca:	d6 df       	rcall	.-84     	; 0x578 <ssd1306_command>
- 5cc:	82 e1       	ldi	r24, 0x12	; 18
- 5ce:	d4 df       	rcall	.-88     	; 0x578 <ssd1306_command>
- 5d0:	81 e8       	ldi	r24, 0x81	; 129
- 5d2:	d2 df       	rcall	.-92     	; 0x578 <ssd1306_command>
- 5d4:	8f ec       	ldi	r24, 0xCF	; 207
- 5d6:	d0 df       	rcall	.-96     	; 0x578 <ssd1306_command>
- 5d8:	89 ed       	ldi	r24, 0xD9	; 217
- 5da:	ce df       	rcall	.-100    	; 0x578 <ssd1306_command>
- 5dc:	81 ef       	ldi	r24, 0xF1	; 241
- 5de:	cc df       	rcall	.-104    	; 0x578 <ssd1306_command>
- 5e0:	8b ed       	ldi	r24, 0xDB	; 219
- 5e2:	ca df       	rcall	.-108    	; 0x578 <ssd1306_command>
- 5e4:	80 e4       	ldi	r24, 0x40	; 64
- 5e6:	c8 df       	rcall	.-112    	; 0x578 <ssd1306_command>
- 5e8:	84 ea       	ldi	r24, 0xA4	; 164
- 5ea:	c6 df       	rcall	.-116    	; 0x578 <ssd1306_command>
- 5ec:	86 ea       	ldi	r24, 0xA6	; 166
- 5ee:	c4 df       	rcall	.-120    	; 0x578 <ssd1306_command>
- 5f0:	8f ea       	ldi	r24, 0xAF	; 175
- 5f2:	c2 cf       	rjmp	.-124    	; 0x578 <ssd1306_command>
- 5f4:	08 95       	ret
+000005e6 <InitializeDisplay>:
+ 5e6:	8e ea       	ldi	r24, 0xAE	; 174
+ 5e8:	f2 df       	rcall	.-28     	; 0x5ce <ssd1306_command>
+ 5ea:	85 ed       	ldi	r24, 0xD5	; 213
+ 5ec:	f0 df       	rcall	.-32     	; 0x5ce <ssd1306_command>
+ 5ee:	80 e8       	ldi	r24, 0x80	; 128
+ 5f0:	ee df       	rcall	.-36     	; 0x5ce <ssd1306_command>
+ 5f2:	88 ea       	ldi	r24, 0xA8	; 168
+ 5f4:	ec df       	rcall	.-40     	; 0x5ce <ssd1306_command>
+ 5f6:	8f e3       	ldi	r24, 0x3F	; 63
+ 5f8:	ea df       	rcall	.-44     	; 0x5ce <ssd1306_command>
+ 5fa:	83 ed       	ldi	r24, 0xD3	; 211
+ 5fc:	e8 df       	rcall	.-48     	; 0x5ce <ssd1306_command>
+ 5fe:	80 e0       	ldi	r24, 0x00	; 0
+ 600:	e6 df       	rcall	.-52     	; 0x5ce <ssd1306_command>
+ 602:	80 e4       	ldi	r24, 0x40	; 64
+ 604:	e4 df       	rcall	.-56     	; 0x5ce <ssd1306_command>
+ 606:	8d e8       	ldi	r24, 0x8D	; 141
+ 608:	e2 df       	rcall	.-60     	; 0x5ce <ssd1306_command>
+ 60a:	84 e1       	ldi	r24, 0x14	; 20
+ 60c:	e0 df       	rcall	.-64     	; 0x5ce <ssd1306_command>
+ 60e:	80 e2       	ldi	r24, 0x20	; 32
+ 610:	de df       	rcall	.-68     	; 0x5ce <ssd1306_command>
+ 612:	80 e0       	ldi	r24, 0x00	; 0
+ 614:	dc df       	rcall	.-72     	; 0x5ce <ssd1306_command>
+ 616:	81 ea       	ldi	r24, 0xA1	; 161
+ 618:	da df       	rcall	.-76     	; 0x5ce <ssd1306_command>
+ 61a:	88 ec       	ldi	r24, 0xC8	; 200
+ 61c:	d8 df       	rcall	.-80     	; 0x5ce <ssd1306_command>
+ 61e:	8a ed       	ldi	r24, 0xDA	; 218
+ 620:	d6 df       	rcall	.-84     	; 0x5ce <ssd1306_command>
+ 622:	82 e1       	ldi	r24, 0x12	; 18
+ 624:	d4 df       	rcall	.-88     	; 0x5ce <ssd1306_command>
+ 626:	81 e8       	ldi	r24, 0x81	; 129
+ 628:	d2 df       	rcall	.-92     	; 0x5ce <ssd1306_command>
+ 62a:	8f ec       	ldi	r24, 0xCF	; 207
+ 62c:	d0 df       	rcall	.-96     	; 0x5ce <ssd1306_command>
+ 62e:	89 ed       	ldi	r24, 0xD9	; 217
+ 630:	ce df       	rcall	.-100    	; 0x5ce <ssd1306_command>
+ 632:	81 ef       	ldi	r24, 0xF1	; 241
+ 634:	cc df       	rcall	.-104    	; 0x5ce <ssd1306_command>
+ 636:	8b ed       	ldi	r24, 0xDB	; 219
+ 638:	ca df       	rcall	.-108    	; 0x5ce <ssd1306_command>
+ 63a:	80 e4       	ldi	r24, 0x40	; 64
+ 63c:	c8 df       	rcall	.-112    	; 0x5ce <ssd1306_command>
+ 63e:	84 ea       	ldi	r24, 0xA4	; 164
+ 640:	c6 df       	rcall	.-116    	; 0x5ce <ssd1306_command>
+ 642:	86 ea       	ldi	r24, 0xA6	; 166
+ 644:	c4 df       	rcall	.-120    	; 0x5ce <ssd1306_command>
+ 646:	8f ea       	ldi	r24, 0xAF	; 175
+ 648:	c2 cf       	rjmp	.-124    	; 0x5ce <ssd1306_command>
+ 64a:	08 95       	ret
 
-000005f6 <SendChar>:
- 5f6:	cf 93       	push	r28
- 5f8:	c8 2f       	mov	r28, r24
- 5fa:	80 91 00 02 	lds	r24, 0x0200	; 0x800200 <__DATA_REGION_ORIGIN__>
- 5fe:	2d df       	rcall	.-422    	; 0x45a <I2C_Start>
- 600:	80 e4       	ldi	r24, 0x40	; 64
- 602:	4f df       	rcall	.-354    	; 0x4a2 <I2C_Write>
- 604:	8c 2f       	mov	r24, r28
- 606:	4d df       	rcall	.-358    	; 0x4a2 <I2C_Write>
- 608:	62 df       	rcall	.-316    	; 0x4ce <I2C_Stop>
- 60a:	cf 91       	pop	r28
- 60c:	08 95       	ret
+0000064c <SendChar>:
+ 64c:	cf 93       	push	r28
+ 64e:	c8 2f       	mov	r28, r24
+ 650:	80 91 00 02 	lds	r24, 0x0200	; 0x800200 <__DATA_REGION_ORIGIN__>
+ 654:	02 df       	rcall	.-508    	; 0x45a <I2C_Start>
+ 656:	80 e4       	ldi	r24, 0x40	; 64
+ 658:	24 df       	rcall	.-440    	; 0x4a2 <I2C_Write>
+ 65a:	8c 2f       	mov	r24, r28
+ 65c:	22 df       	rcall	.-444    	; 0x4a2 <I2C_Write>
+ 65e:	37 df       	rcall	.-402    	; 0x4ce <I2C_Stop>
+ 660:	cf 91       	pop	r28
+ 662:	08 95       	ret
 
-0000060e <setXY>:
- 60e:	cf 93       	push	r28
- 610:	c6 2f       	mov	r28, r22
- 612:	80 55       	subi	r24, 0x50	; 80
- 614:	b1 df       	rcall	.-158    	; 0x578 <ssd1306_command>
- 616:	8c 2f       	mov	r24, r28
- 618:	88 0f       	add	r24, r24
- 61a:	88 0f       	add	r24, r24
- 61c:	88 0f       	add	r24, r24
- 61e:	88 70       	andi	r24, 0x08	; 8
- 620:	ab df       	rcall	.-170    	; 0x578 <ssd1306_command>
- 622:	8c 2f       	mov	r24, r28
- 624:	90 e0       	ldi	r25, 0x00	; 0
- 626:	96 95       	lsr	r25
- 628:	87 95       	ror	r24
- 62a:	8f 70       	andi	r24, 0x0F	; 15
- 62c:	80 5f       	subi	r24, 0xF0	; 240
- 62e:	a4 df       	rcall	.-184    	; 0x578 <ssd1306_command>
- 630:	cf 91       	pop	r28
- 632:	08 95       	ret
+00000664 <setXY>:
+ 664:	cf 93       	push	r28
+ 666:	c6 2f       	mov	r28, r22
+ 668:	80 55       	subi	r24, 0x50	; 80
+ 66a:	b1 df       	rcall	.-158    	; 0x5ce <ssd1306_command>
+ 66c:	8c 2f       	mov	r24, r28
+ 66e:	88 0f       	add	r24, r24
+ 670:	88 0f       	add	r24, r24
+ 672:	88 0f       	add	r24, r24
+ 674:	88 70       	andi	r24, 0x08	; 8
+ 676:	ab df       	rcall	.-170    	; 0x5ce <ssd1306_command>
+ 678:	8c 2f       	mov	r24, r28
+ 67a:	90 e0       	ldi	r25, 0x00	; 0
+ 67c:	96 95       	lsr	r25
+ 67e:	87 95       	ror	r24
+ 680:	8f 70       	andi	r24, 0x0F	; 15
+ 682:	80 5f       	subi	r24, 0xF0	; 240
+ 684:	a4 df       	rcall	.-184    	; 0x5ce <ssd1306_command>
+ 686:	cf 91       	pop	r28
+ 688:	08 95       	ret
 
-00000634 <clear_display>:
- 634:	cf 93       	push	r28
- 636:	df 93       	push	r29
- 638:	d0 e0       	ldi	r29, 0x00	; 0
- 63a:	0b c0       	rjmp	.+22     	; 0x652 <clear_display+0x1e>
- 63c:	60 e0       	ldi	r22, 0x00	; 0
- 63e:	8d 2f       	mov	r24, r29
- 640:	e6 df       	rcall	.-52     	; 0x60e <setXY>
- 642:	c0 e0       	ldi	r28, 0x00	; 0
- 644:	03 c0       	rjmp	.+6      	; 0x64c <clear_display+0x18>
- 646:	80 e0       	ldi	r24, 0x00	; 0
- 648:	d6 df       	rcall	.-84     	; 0x5f6 <SendChar>
- 64a:	cf 5f       	subi	r28, 0xFF	; 255
- 64c:	cc 23       	and	r28, r28
- 64e:	dc f7       	brge	.-10     	; 0x646 <clear_display+0x12>
- 650:	df 5f       	subi	r29, 0xFF	; 255
- 652:	d8 30       	cpi	r29, 0x08	; 8
- 654:	98 f3       	brcs	.-26     	; 0x63c <clear_display+0x8>
- 656:	df 91       	pop	r29
- 658:	cf 91       	pop	r28
- 65a:	08 95       	ret
+0000068a <clear_display>:
+ 68a:	cf 93       	push	r28
+ 68c:	df 93       	push	r29
+ 68e:	d0 e0       	ldi	r29, 0x00	; 0
+ 690:	0b c0       	rjmp	.+22     	; 0x6a8 <clear_display+0x1e>
+ 692:	60 e0       	ldi	r22, 0x00	; 0
+ 694:	8d 2f       	mov	r24, r29
+ 696:	e6 df       	rcall	.-52     	; 0x664 <setXY>
+ 698:	c0 e0       	ldi	r28, 0x00	; 0
+ 69a:	03 c0       	rjmp	.+6      	; 0x6a2 <clear_display+0x18>
+ 69c:	80 e0       	ldi	r24, 0x00	; 0
+ 69e:	d6 df       	rcall	.-84     	; 0x64c <SendChar>
+ 6a0:	cf 5f       	subi	r28, 0xFF	; 255
+ 6a2:	cc 23       	and	r28, r28
+ 6a4:	dc f7       	brge	.-10     	; 0x69c <clear_display+0x12>
+ 6a6:	df 5f       	subi	r29, 0xFF	; 255
+ 6a8:	d8 30       	cpi	r29, 0x08	; 8
+ 6aa:	98 f3       	brcs	.-26     	; 0x692 <clear_display+0x8>
+ 6ac:	df 91       	pop	r29
+ 6ae:	cf 91       	pop	r28
+ 6b0:	08 95       	ret
 
-0000065c <sendCharXY>:
- 65c:	1f 93       	push	r17
- 65e:	cf 93       	push	r28
- 660:	df 93       	push	r29
- 662:	18 2f       	mov	r17, r24
- 664:	86 2f       	mov	r24, r22
- 666:	64 2f       	mov	r22, r20
- 668:	d2 df       	rcall	.-92     	; 0x60e <setXY>
- 66a:	80 91 00 02 	lds	r24, 0x0200	; 0x800200 <__DATA_REGION_ORIGIN__>
- 66e:	f5 de       	rcall	.-534    	; 0x45a <I2C_Start>
- 670:	80 e4       	ldi	r24, 0x40	; 64
- 672:	17 df       	rcall	.-466    	; 0x4a2 <I2C_Write>
- 674:	c0 e0       	ldi	r28, 0x00	; 0
- 676:	d0 e0       	ldi	r29, 0x00	; 0
- 678:	10 c0       	rjmp	.+32     	; 0x69a <sendCharXY+0x3e>
- 67a:	e1 2f       	mov	r30, r17
- 67c:	f0 e0       	ldi	r31, 0x00	; 0
- 67e:	b0 97       	sbiw	r30, 0x20	; 32
- 680:	ee 0f       	add	r30, r30
- 682:	ff 1f       	adc	r31, r31
- 684:	ee 0f       	add	r30, r30
- 686:	ff 1f       	adc	r31, r31
- 688:	ee 0f       	add	r30, r30
- 68a:	ff 1f       	adc	r31, r31
- 68c:	ec 51       	subi	r30, 0x1C	; 28
- 68e:	ff 4f       	sbci	r31, 0xFF	; 255
- 690:	ec 0f       	add	r30, r28
- 692:	fd 1f       	adc	r31, r29
- 694:	84 91       	lpm	r24, Z
- 696:	05 df       	rcall	.-502    	; 0x4a2 <I2C_Write>
- 698:	21 96       	adiw	r28, 0x01	; 1
- 69a:	c8 30       	cpi	r28, 0x08	; 8
- 69c:	d1 05       	cpc	r29, r1
- 69e:	6c f3       	brlt	.-38     	; 0x67a <sendCharXY+0x1e>
- 6a0:	16 df       	rcall	.-468    	; 0x4ce <I2C_Stop>
- 6a2:	df 91       	pop	r29
- 6a4:	cf 91       	pop	r28
- 6a6:	1f 91       	pop	r17
- 6a8:	08 95       	ret
-
-000006aa <print_fonts>:
-void print_fonts(){
- 6aa:	df 92       	push	r13
- 6ac:	ef 92       	push	r14
- 6ae:	ff 92       	push	r15
- 6b0:	0f 93       	push	r16
+000006b2 <sendCharXY>:
  6b2:	1f 93       	push	r17
  6b4:	cf 93       	push	r28
  6b6:	df 93       	push	r29
-	clear_display();
- 6b8:	bd df       	rcall	.-134    	; 0x634 <clear_display>
-
-	uint8_t data=32;
-	for(int k=0;k<6;k++){
- 6ba:	e1 2c       	mov	r14, r1
- 6bc:	f1 2c       	mov	r15, r1
-
-}
-void print_fonts(){
-	clear_display();
-
-	uint8_t data=32;
- 6be:	68 94       	set
- 6c0:	dd 24       	eor	r13, r13
- 6c2:	d5 f8       	bld	r13, 5
-	for(int k=0;k<6;k++){
- 6c4:	27 c0       	rjmp	.+78     	; 0x714 <print_fonts+0x6a>
-		setXY(k,0);
- 6c6:	60 e0       	ldi	r22, 0x00	; 0
- 6c8:	8e 2d       	mov	r24, r14
- 6ca:	a1 df       	rcall	.-190    	; 0x60e <setXY>
-
-		for (int j=0;j<16;j++)
- 6cc:	00 e0       	ldi	r16, 0x00	; 0
- 6ce:	10 e0       	ldi	r17, 0x00	; 0
- 6d0:	19 c0       	rjmp	.+50     	; 0x704 <print_fonts+0x5a>
-		{
-
-			for(int i=0;i<8;i++){
-			SendChar(pgm_read_byte(myFont[(data+j)-0x20]+i));
- 6d2:	f8 01       	movw	r30, r16
- 6d4:	ed 0d       	add	r30, r13
- 6d6:	f1 1d       	adc	r31, r1
- 6d8:	b0 97       	sbiw	r30, 0x20	; 32
+ 6b8:	18 2f       	mov	r17, r24
+ 6ba:	86 2f       	mov	r24, r22
+ 6bc:	64 2f       	mov	r22, r20
+ 6be:	d2 df       	rcall	.-92     	; 0x664 <setXY>
+ 6c0:	80 91 00 02 	lds	r24, 0x0200	; 0x800200 <__DATA_REGION_ORIGIN__>
+ 6c4:	ca de       	rcall	.-620    	; 0x45a <I2C_Start>
+ 6c6:	80 e4       	ldi	r24, 0x40	; 64
+ 6c8:	ec de       	rcall	.-552    	; 0x4a2 <I2C_Write>
+ 6ca:	c0 e0       	ldi	r28, 0x00	; 0
+ 6cc:	d0 e0       	ldi	r29, 0x00	; 0
+ 6ce:	10 c0       	rjmp	.+32     	; 0x6f0 <sendCharXY+0x3e>
+ 6d0:	e1 2f       	mov	r30, r17
+ 6d2:	f0 e0       	ldi	r31, 0x00	; 0
+ 6d4:	b0 97       	sbiw	r30, 0x20	; 32
+ 6d6:	ee 0f       	add	r30, r30
+ 6d8:	ff 1f       	adc	r31, r31
  6da:	ee 0f       	add	r30, r30
  6dc:	ff 1f       	adc	r31, r31
  6de:	ee 0f       	add	r30, r30
  6e0:	ff 1f       	adc	r31, r31
- 6e2:	ee 0f       	add	r30, r30
- 6e4:	ff 1f       	adc	r31, r31
- 6e6:	ec 51       	subi	r30, 0x1C	; 28
- 6e8:	ff 4f       	sbci	r31, 0xFF	; 255
- 6ea:	ec 0f       	add	r30, r28
- 6ec:	fd 1f       	adc	r31, r29
- 6ee:	84 91       	lpm	r24, Z
- 6f0:	82 df       	rcall	.-252    	; 0x5f6 <SendChar>
+ 6e2:	ec 51       	subi	r30, 0x1C	; 28
+ 6e4:	ff 4f       	sbci	r31, 0xFF	; 255
+ 6e6:	ec 0f       	add	r30, r28
+ 6e8:	fd 1f       	adc	r31, r29
+ 6ea:	84 91       	lpm	r24, Z
+ 6ec:	da de       	rcall	.-588    	; 0x4a2 <I2C_Write>
+ 6ee:	21 96       	adiw	r28, 0x01	; 1
+ 6f0:	c8 30       	cpi	r28, 0x08	; 8
+ 6f2:	d1 05       	cpc	r29, r1
+ 6f4:	6c f3       	brlt	.-38     	; 0x6d0 <sendCharXY+0x1e>
+ 6f6:	eb de       	rcall	.-554    	; 0x4ce <I2C_Stop>
+ 6f8:	df 91       	pop	r29
+ 6fa:	cf 91       	pop	r28
+ 6fc:	1f 91       	pop	r17
+ 6fe:	08 95       	ret
+
+00000700 <print_fonts>:
+void print_fonts(){
+ 700:	df 92       	push	r13
+ 702:	ef 92       	push	r14
+ 704:	ff 92       	push	r15
+ 706:	0f 93       	push	r16
+ 708:	1f 93       	push	r17
+ 70a:	cf 93       	push	r28
+ 70c:	df 93       	push	r29
+	clear_display();
+ 70e:	bd df       	rcall	.-134    	; 0x68a <clear_display>
+
+	uint8_t data=32;
+	for(int k=0;k<6;k++){
+ 710:	e1 2c       	mov	r14, r1
+ 712:	f1 2c       	mov	r15, r1
+
+}
+void print_fonts(){
+	clear_display();
+
+	uint8_t data=32;
+ 714:	68 94       	set
+ 716:	dd 24       	eor	r13, r13
+ 718:	d5 f8       	bld	r13, 5
+	for(int k=0;k<6;k++){
+ 71a:	27 c0       	rjmp	.+78     	; 0x76a <print_fonts+0x6a>
+		setXY(k,0);
+ 71c:	60 e0       	ldi	r22, 0x00	; 0
+ 71e:	8e 2d       	mov	r24, r14
+ 720:	a1 df       	rcall	.-190    	; 0x664 <setXY>
+
+		for (int j=0;j<16;j++)
+ 722:	00 e0       	ldi	r16, 0x00	; 0
+ 724:	10 e0       	ldi	r17, 0x00	; 0
+ 726:	19 c0       	rjmp	.+50     	; 0x75a <print_fonts+0x5a>
+		{
+
+			for(int i=0;i<8;i++){
+			SendChar(pgm_read_byte(myFont[(data+j)-0x20]+i));
+ 728:	f8 01       	movw	r30, r16
+ 72a:	ed 0d       	add	r30, r13
+ 72c:	f1 1d       	adc	r31, r1
+ 72e:	b0 97       	sbiw	r30, 0x20	; 32
+ 730:	ee 0f       	add	r30, r30
+ 732:	ff 1f       	adc	r31, r31
+ 734:	ee 0f       	add	r30, r30
+ 736:	ff 1f       	adc	r31, r31
+ 738:	ee 0f       	add	r30, r30
+ 73a:	ff 1f       	adc	r31, r31
+ 73c:	ec 51       	subi	r30, 0x1C	; 28
+ 73e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 740:	ec 0f       	add	r30, r28
+ 742:	fd 1f       	adc	r31, r29
+ 744:	84 91       	lpm	r24, Z
+ 746:	82 df       	rcall	.-252    	; 0x64c <SendChar>
 		setXY(k,0);
 
 		for (int j=0;j<16;j++)
 		{
 
 			for(int i=0;i<8;i++){
- 6f2:	21 96       	adiw	r28, 0x01	; 1
- 6f4:	02 c0       	rjmp	.+4      	; 0x6fa <print_fonts+0x50>
- 6f6:	c0 e0       	ldi	r28, 0x00	; 0
- 6f8:	d0 e0       	ldi	r29, 0x00	; 0
- 6fa:	c8 30       	cpi	r28, 0x08	; 8
- 6fc:	d1 05       	cpc	r29, r1
- 6fe:	4c f3       	brlt	.-46     	; 0x6d2 <print_fonts+0x28>
+ 748:	21 96       	adiw	r28, 0x01	; 1
+ 74a:	02 c0       	rjmp	.+4      	; 0x750 <print_fonts+0x50>
+ 74c:	c0 e0       	ldi	r28, 0x00	; 0
+ 74e:	d0 e0       	ldi	r29, 0x00	; 0
+ 750:	c8 30       	cpi	r28, 0x08	; 8
+ 752:	d1 05       	cpc	r29, r1
+ 754:	4c f3       	brlt	.-46     	; 0x728 <print_fonts+0x28>
 
 	uint8_t data=32;
 	for(int k=0;k<6;k++){
 		setXY(k,0);
 
 		for (int j=0;j<16;j++)
- 700:	0f 5f       	subi	r16, 0xFF	; 255
- 702:	1f 4f       	sbci	r17, 0xFF	; 255
- 704:	00 31       	cpi	r16, 0x10	; 16
- 706:	11 05       	cpc	r17, r1
- 708:	b4 f3       	brlt	.-20     	; 0x6f6 <print_fonts+0x4c>
+ 756:	0f 5f       	subi	r16, 0xFF	; 255
+ 758:	1f 4f       	sbci	r17, 0xFF	; 255
+ 75a:	00 31       	cpi	r16, 0x10	; 16
+ 75c:	11 05       	cpc	r17, r1
+ 75e:	b4 f3       	brlt	.-20     	; 0x74c <print_fonts+0x4c>
 
 			for(int i=0;i<8;i++){
 			SendChar(pgm_read_byte(myFont[(data+j)-0x20]+i));
 			}
 		}
 		data=data+16;
- 70a:	80 e1       	ldi	r24, 0x10	; 16
- 70c:	d8 0e       	add	r13, r24
+ 760:	80 e1       	ldi	r24, 0x10	; 16
+ 762:	d8 0e       	add	r13, r24
 }
 void print_fonts(){
 	clear_display();
 
 	uint8_t data=32;
 	for(int k=0;k<6;k++){
- 70e:	8f ef       	ldi	r24, 0xFF	; 255
- 710:	e8 1a       	sub	r14, r24
- 712:	f8 0a       	sbc	r15, r24
- 714:	86 e0       	ldi	r24, 0x06	; 6
- 716:	e8 16       	cp	r14, r24
- 718:	f1 04       	cpc	r15, r1
- 71a:	ac f2       	brlt	.-86     	; 0x6c6 <print_fonts+0x1c>
+ 764:	8f ef       	ldi	r24, 0xFF	; 255
+ 766:	e8 1a       	sub	r14, r24
+ 768:	f8 0a       	sbc	r15, r24
+ 76a:	86 e0       	ldi	r24, 0x06	; 6
+ 76c:	e8 16       	cp	r14, r24
+ 76e:	f1 04       	cpc	r15, r1
+ 770:	ac f2       	brlt	.-86     	; 0x71c <print_fonts+0x1c>
 			SendChar(pgm_read_byte(myFont[(data+j)-0x20]+i));
 			}
 		}
 		data=data+16;
 	}
 	}
- 71c:	df 91       	pop	r29
- 71e:	cf 91       	pop	r28
- 720:	1f 91       	pop	r17
- 722:	0f 91       	pop	r16
- 724:	ff 90       	pop	r15
- 726:	ef 90       	pop	r14
- 728:	df 90       	pop	r13
- 72a:	08 95       	ret
+ 772:	df 91       	pop	r29
+ 774:	cf 91       	pop	r28
+ 776:	1f 91       	pop	r17
+ 778:	0f 91       	pop	r16
+ 77a:	ff 90       	pop	r15
+ 77c:	ef 90       	pop	r14
+ 77e:	df 90       	pop	r13
+ 780:	08 95       	ret
 
-0000072c <_exit>:
- 72c:	f8 94       	cli
+00000782 <_exit>:
+ 782:	f8 94       	cli
 
-0000072e <__stop_program>:
- 72e:	ff cf       	rjmp	.-2      	; 0x72e <__stop_program>
+00000784 <__stop_program>:
+ 784:	ff cf       	rjmp	.-2      	; 0x784 <__stop_program>
