@@ -52,11 +52,11 @@ int main(void)
 		/*if((PING & 0b00100000) == 0b00000000){
 			while((PING & 0b00100000) == 0b00000000){}
 			storeValue(storedValues, PINK, &index);
-		}
-		if(index == 3){
-			for(int i = 0; i < 3; i++){
+			for(int i = 0; i < index; i++){
 				sendCharXY(storedValues[i], 0, i);
 			}
+		}
+		if(index == 3){
 			index = 0;
 		}*/
 		
