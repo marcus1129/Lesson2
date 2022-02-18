@@ -13,7 +13,7 @@ The program needs the following functionality
     <li>Clear the screen every fourth button press, so only 3 inputs can be displayed at a time</li>
 </ul>
 
-
+- ss
 
 Firstly all inputs(signals that need to be read) should be defined as active low by using the internal pullup resistor:
 
