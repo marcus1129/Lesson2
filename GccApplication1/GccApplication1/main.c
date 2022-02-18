@@ -2,7 +2,8 @@
  * opg1_ny_E20.c
  *
  * Created: 01-09-2020 14:34:13
- * Author : osch
+ * Author : Marcus Korre
+ * Github : https://github.com/marcus1129/Lesson2.git
  */ 
 #include <avr/io.h>
 #include <avr/interrupt.h>
