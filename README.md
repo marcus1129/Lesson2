@@ -14,6 +14,12 @@ The program needs the following functionality
 
 
 
+The program is really simple and so there aren't many ways to do it, but one major variable is how we react to the button being pressed, we can either read the pin like a normal input or we can use an external interrupt, for the sake of the assignment, we will implement both.
+
+The advantage of implementing an external interrupt, is that the program handles the button press exactly when it happens, regardless of what code it is executing, this doesn't really matter in our program, but is essential for something like the breaks in a car.
+
+The advantage of implementing out button as a normal pin and polling for an input, is simplicity, external interrupts are better in almost all cases, but there are a limited amount of pins that can handle an interrupt and so external interrupt should only be used where they are necessary.
+
 
 
 
