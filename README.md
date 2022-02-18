@@ -6,14 +6,19 @@
 
 The program needs the following functionality
 
-<ul>
-    <li>Take a 1-bit input from a button</li>
-    <li>Take an 8-bit input from a dip-switch when the button is pressed</li>
-    <li>Write the 8-bit input as an ascii character to an LCD screen</li>
-    <li>Clear the screen every fourth button press, so only 3 inputs can be displayed at a time</li>
-</ul>
+- Take a 1-bit input from a button
 
-- ss
+- Take an 8-bit input from a dip-switch when the button is pressed
+- Write the 8-bit input as an ascii character to an LCD screen
+- Clear the screen every fourth button press, so only 3 inputs can be displayed at a time
+
+
+
+
+
+
+
+
 
 Firstly all inputs(signals that need to be read) should be defined as active low by using the internal pullup resistor:
 
