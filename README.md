@@ -24,11 +24,11 @@ The advantage of implementing out button as a normal pin and polling for an inpu
 
 We can describe these approaches with a flow chart for each, the approach with no interrupt looks like so:
 
-![1645377253534](C:\Users\marcu\AppData\Roaming\Typora\typora-user-images\1645377253534.png)
+![](Graphs/NoInterruptFlowchart.jpg)
 
 For the approach with an external interrupt it would look like this.
 
-![1645378690799](C:\Users\marcu\AppData\Roaming\Typora\typora-user-images\1645378690799.png)
+![](Graphs/InterruptFlowchart.jpg)
 
 Here the interrupt and main is running simultaneously.
 
