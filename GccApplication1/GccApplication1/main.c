@@ -52,6 +52,7 @@ int main(void)
 		/* ------ NO INTERRUPT SOLUTION ------ */
 		/*if((PING & 0b00100000) == 0b00000000){
 			while((PING & 0b00100000) == 0b00000000){}
+			clear_display();
 			storeValue(storedValues, PINK, &index);
 			for(int i = 0; i < index; i++){
 				sendCharXY(storedValues[i], 0, i);
