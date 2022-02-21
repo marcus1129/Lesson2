@@ -32,7 +32,9 @@ For the approach with an external interrupt it would look like this.
 
 Here the interrupt and main is running simultaneously.
 
+The resulting text on the LCD looks like so:
 
+![](Graphs/Res.jpg)
 
 
 
